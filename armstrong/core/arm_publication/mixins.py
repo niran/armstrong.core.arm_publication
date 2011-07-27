@@ -1,10 +1,11 @@
+from django.contrib.contenttypes import generic
 from django.db import models
 
 from .models import Publication, PublicationNode
 
 
 class PublicationFields(models.Model):
-    publications = models.ManyToManyField(Publication, through=PublicationNode)
+    publication_nodes = generic.GenericRelation(PublicationNode)
 
     class Meta:
         abstract = True
@@ -12,11 +13,11 @@ class PublicationFields(models.Model):
     @property
     def pub_date(self):
         # for backwards compatibility
-        qs = self.publicationnode_set.order_by('pub_date')
+        qs = self.publication_nodes.order_by('pub_date')
         return qs[0].pub_date if qs else None
 
     @property
     def publication(self):
         # for backwards compatibility
-        qs = self.publicationnode_set.order_by('pub_date')
+        qs = self.publication_nodes.order_by('pub_date')
         return qs[0].publication if qs else None
