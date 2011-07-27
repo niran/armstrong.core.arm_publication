@@ -47,6 +47,10 @@ class PublicationManager(models.Manager):
             self._default = self.get_default()
         return self._default
 
+    def _clear_default_cache(self):
+        if hasattr(self, '_default'):
+            del self._default
+
 
 class Publication(MPTTModel):
     """
@@ -65,6 +69,14 @@ class Publication(MPTTModel):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        Publication.objects._clear_default_cache()
+        return super(Publication, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        Publication.objects._clear_default_cache()
+        return super(Publication, self).delete(*args, **kwargs)
 
 
 class PublicationNode(models.Model):
