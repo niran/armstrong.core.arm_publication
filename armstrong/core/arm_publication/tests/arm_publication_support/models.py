@@ -2,7 +2,7 @@ import datetime
 
 from django.db import models
 
-from ...mixins import PublicationFields
+from ...mixins import PublicationMixin
 from ...models import Publication, PublicationNode
 
 
@@ -16,7 +16,7 @@ class ContentManager(models.Manager):
         return object
 
 
-class Story(PublicationFields, models.Model):
+class Story(PublicationMixin, models.Model):
     body = models.TextField(default='')
 
     objects = ContentManager()

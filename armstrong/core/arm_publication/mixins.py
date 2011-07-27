@@ -4,7 +4,7 @@ from django.db import models
 from .models import Publication, PublicationNode
 
 
-class PublicationFields(models.Model):
+class PublicationMixin(models.Model):
     publication_nodes = generic.GenericRelation(PublicationNode)
 
     class Meta:
